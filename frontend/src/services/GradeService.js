@@ -1,7 +1,7 @@
-import http from '../http-common';
+import http from "../http-common";
 
 const getAll = () => {
-  return http.get('/grade');
+  return http.get("/grade");
 };
 
 const get = (id) => {
@@ -9,7 +9,7 @@ const get = (id) => {
 };
 
 const create = (data) => {
-  return http.post('/grade', data);
+  return http.post("/grade", data);
 };
 
 const update = (id, data) => {
@@ -28,6 +28,10 @@ const findByName = (name) => {
   return http.get(`/grade?name=${name}`);
 };
 
+const importCsv = () => {
+  return http.post(`/grade/import`);
+};
+
 export default {
   getAll,
   get,
@@ -36,4 +40,5 @@ export default {
   remove,
   removeAll,
   findByName,
+  importCsv,
 };

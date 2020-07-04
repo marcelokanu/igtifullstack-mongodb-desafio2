@@ -61,6 +61,16 @@ const GradeList = () => {
       });
   };
 
+  const importCsv = () => {
+    GradeDataService.importCsv()
+      .then((response) => {
+        refreshList();
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   return (
     <div className="list row">
       <div className="col-md-8">
@@ -103,6 +113,9 @@ const GradeList = () => {
 
         <button className="m-3 btn btn-sm btn-danger" onClick={removeAllGrade}>
           Remove All
+        </button>
+        <button className="m-3 btn btn-sm btn-success" onClick={importCsv}>
+          Import Grades
         </button>
       </div>
       <div className="col-md-6">
