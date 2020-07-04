@@ -1,11 +1,8 @@
-import { db, gradeModel } from "../models/index.js";
+import fs from "fs";
+import path from "path";
+import parse from "csv-parser";
+import { gradeModel } from "../models/index.js";
 import { logger } from "../config/logger.js";
-
-// name: "Marco Tulio"
-// subject : "Historia"
-// type: "Trabalho Pratico"
-// value : "17.4"
-// lastModified :"2020-06-19T01:19:24.962Z"
 
 const create = async (req, res) => {
   const { name, subject, type, value } = req.body;
@@ -47,7 +44,6 @@ const findAll = async (req, res) => {
       if (err) {
         return res.status(500).json(err);
       }
-      console.log(grades);
       return res.status(202).json(grades);
     });
     logger.info(`GET /grade`);
@@ -138,11 +134,10 @@ const remove = async (req, res) => {
 };
 
 const removeAll = async (req, res) => {
-  const id = req.params.id;
-
   try {
+    const deleted = await gradeModel.deleteMany();
     res.send({
-      message: `Grades excluidos`,
+      message: `${deleted.deletedCount} grades excluidas`,
     });
     logger.info(`DELETE /grade`);
   } catch (error) {
@@ -151,4 +146,30 @@ const removeAll = async (req, res) => {
   }
 };
 
-export default { create, findAll, findOne, update, remove, removeAll };
+const importCsv = (req, res) => {
+  const gradesCsvPath = path.resolve(path.resolve(), "database", "grades.csv");
+  const csvData = [];
+  fs.createReadStream(gradesCsvPath)
+    .pipe(parse({ delimiter: ":" }))
+    .on("data", function (csvrow) {
+      csvData.push(csvrow);
+    })
+    .on("end", async function () {
+      await gradeModel.insertMany(csvData, (err, grades) => {
+        if (err) {
+          res.send(err);
+        }
+        res.send(grades);
+      });
+    });
+};
+
+export default {
+  create,
+  findAll,
+  findOne,
+  update,
+  remove,
+  removeAll,
+  importCsv,
+};
