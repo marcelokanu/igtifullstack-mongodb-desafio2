@@ -18,7 +18,10 @@
 .env.test.local
 .env.production.local
 
-testjeje.js
+testjeje.html
+testjeje copy.html
+testeJeje.html
+test2.html
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
