@@ -8,12 +8,12 @@ In the project directory, you can run:
 
 
 
-- Backend folder
+# Backend folder
 ###### `create .env file using as model the file .sample-env and complete with your MongoDB connection address and port`
 
 ### `yarn start`
 
-- Frontend folder
+# Frontend folder
 ### `yarn start`
 
 Runs the app in the development mode.<br />
